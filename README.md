@@ -11,6 +11,10 @@
 </p>
 
 <p align="center">
+  <sub>Approval note: <code>sysknife approve &lt;transaction-id&gt;</code> is the out-of-band gate for MCP, where the receipt must come from a terminal so an AI client cannot approve its own plan. The CLI's own <code>sysknife "&lt;intent&gt;"</code> run gates each step with an interactive y/N (or type-the-action-name) prompt — or the <code>--yes</code> ceiling — and approves in-process; it does not invoke the <code>approve</code> subcommand.</sub>
+</p>
+
+<p align="center">
   <a href="https://github.com/lacs-project/sysknife/actions"><img src="https://img.shields.io/github/actions/workflow/status/lacs-project/sysknife/ci.yml?branch=main&style=flat-square&logo=github&label=CI" alt="CI"></a>
   <a href="https://github.com/lacs-project/sysknife/blob/main/LICENSE"><img src="https://img.shields.io/github/license/lacs-project/sysknife?style=flat-square" alt="License"></a>
   <a href="https://github.com/lacs-project/sysknife/stargazers"><img src="https://img.shields.io/github/stars/lacs-project/sysknife?style=flat-square&logo=github" alt="Stars"></a>
