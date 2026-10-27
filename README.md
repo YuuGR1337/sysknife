@@ -11,10 +11,6 @@
 </p>
 
 <p align="center">
-  <sub>Approval note: <code>sysknife approve &lt;transaction-id&gt;</code> is the out-of-band gate for MCP, where the receipt must come from a terminal so an AI client cannot approve its own plan. The CLI's own <code>sysknife "&lt;intent&gt;"</code> run gates each step with an interactive y/N (or type-the-action-name) prompt — or the <code>--yes</code> ceiling — and approves in-process; it does not invoke the <code>approve</code> subcommand.</sub>
-</p>
-
-<p align="center">
   <a href="https://github.com/lacs-project/sysknife/actions"><img src="https://img.shields.io/github/actions/workflow/status/lacs-project/sysknife/ci.yml?branch=main&style=flat-square&logo=github&label=CI" alt="CI"></a>
   <a href="https://github.com/lacs-project/sysknife/blob/main/LICENSE"><img src="https://img.shields.io/github/license/lacs-project/sysknife?style=flat-square" alt="License"></a>
   <a href="https://github.com/lacs-project/sysknife/stargazers"><img src="https://img.shields.io/github/stars/lacs-project/sysknife?style=flat-square&logo=github" alt="Stars"></a>
@@ -299,11 +295,22 @@ sysknife-brain   →   approval gate    →   sysknife-daemon
                      takes y/n          every action
 ```
 
-The approval gate is a surface, not a component. In the maintained paths it is
-`sysknife approve <transaction-id>` in your terminal — for the CLI and for MCP
-alike, which is why an AI client cannot approve its own plan. The paused Tauri
-GUI (`sysknife-shell`) is a third implementation of that same gate, not a step
-the other two route through.
+The approval gate is a surface, not a component, and it depends on how you
+reach SysKnife:
+
+- **MCP:** a plan from an AI client needs a receipt from
+  `sysknife approve <transaction-id>`, typed in your terminal, so the client
+  cannot approve its own plan.
+- **The standalone CLI:** `sysknife "<intent>"` asks about each step at its own
+  prompt, or approves up to `--max-risk` under `--yes`. It never calls
+  `sysknife approve`.
+- **An agent with a shell on your account** can drive the CLI by itself. In that
+  case the daemon's role limits
+  ([SECURITY.md, layer 3](SECURITY.md#layer-3--role-based-authorization-sysknife-daemon))
+  are the boundary that holds.
+
+The paused Tauri GUI (`sysknife-shell`) is a third implementation of the gate,
+not a step the other two route through.
 
 1. You type a natural-language request.
 2. The brain proposes a plan — each step is a **typed action** with
